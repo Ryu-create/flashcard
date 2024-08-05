@@ -1,0 +1,43 @@
+<?php
+  require_once('includes/dbh.inc.php');
+  $stmt = $pdo->prepare("SELECT * FROM words;");
+  $stmt->execute();
+
+  $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <section class="container"> 
+      <h1>単語帳</h1>
+
+      <?php if (empty($results)): ?>
+        <?php echo "単語がありません"; ?>
+      <?php endif ?>
+
+      <?php for ($i = 0; $i < count($results); $i++): ?>
+      <div class="word-container">
+        <div class="en-word"><?php echo $results[$i]["english"]; ?></div>
+        <div class="ja-word ja-word1"></div>
+        <div class="ja-word ja-word2"><?php echo $results[$i]["japanese"]; ?></div>
+      </div>
+      <?php endfor ?>
+
+      <div class="link-container">
+        <a href="show-word.php" class="show-word">一覧ページ</a>
+        <a href="new-word.php" class="new-word">+</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
